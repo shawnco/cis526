@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import { Constants } from './../app.constants';
 import { Observable } from 'rxjs';
 
-Injectable()
+@Injectable()
 export class WidgetService
 {
     constructor(
