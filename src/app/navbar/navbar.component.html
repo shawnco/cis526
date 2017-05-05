@@ -1,4 +1,4 @@
-<ul class='nav nav-pills nav-stacked'>
+<ul class='nav nav-stacked'>
     <li *ngFor='let d of dashboards'><a routerLink='/dashboard/{{d.id}}'>{{d.name}} <i class='material-icons'>keyboard_arrow_right</i></a></li>
-    <li>New Dashboard <i class='material-icons'>add</i></li>
+    <li (click)='addDashboard()'>New Dashboard <i class='material-icons'>add</i></li>
 </ul>
