@@ -3,10 +3,10 @@
             <h1>Lifeboard</h1>
         </div>
         <div class='row'>
-            <div class='col-sm-3'>
+            <div class='col-sm-3' id='navigation'>
                 <navbar [dashboards]="dashboards"></navbar>
             </div>
-            <div class='col-sm-9'>
+            <div class='col-sm-9' id='content'>
                 <router-outlet></router-outlet>
             </div>
         </div>

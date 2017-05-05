@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit
             .map((params: Params)=>{
                 console.log(params);
                 if(params['id']){
-                    var id = +params['id'];
+                    var id = params['id'];
                     this.widgetService.getWidgets(id)
                         .subscribe((data: Object[])=>{
                             this.widgets = data;
@@ -34,5 +34,9 @@ export class DashboardComponent implements OnInit
                         });
                 }
             });
+    }
+
+    addWidget(): void
+    {
     }
 }
