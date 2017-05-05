@@ -10,6 +10,7 @@ export class NavbarComponent
     @Input()
     dashboards: Object[];
 
+    adding: boolean;
     newDashName: string; 
     
     constructor(
@@ -19,11 +20,11 @@ export class NavbarComponent
     // Add a dashboard to the list.
     addDashboard(): void
     {
-        var newDashName = prompt('Name of new dashboard: ');
-        this.dashboardService.addDashboard(newDashName)
+        this.dashboardService.addDashboard(this.newDashName)
             .subscribe((data: boolean)=>{
                 if(data){
                     console.log('Added dashboard!');
+                    this.adding = false;
                 }
             });
     }
