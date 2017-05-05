@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'navbar',
@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent
 {
+    @Input()
+    dashboards: Object[];
 
+    constructor(){console.log(this.dashboards);}
 }
