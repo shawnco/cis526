@@ -1,14 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'widget',
     templateUrl: './widget.component.html'
 })
-export class WidgetComponent implements OnInit
+export class WidgetComponent
 {
     @Input()
-    widgets: Object[];
-    ngOnInit(): void {
-        console.log(this.widgets);
-    }
+    widget: Object
 }

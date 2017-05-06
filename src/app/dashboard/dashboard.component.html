@@ -1,5 +1,7 @@
 <div class='row'>
-    <widget [widgets]='widgets'></widget>
+    <div *ngFor='let w of widgets' class='col-sm-3 widget'>
+        <widget [widget]='w'></widget>
+    </div>
     <div class='col-sm-3 widget'><a (click)='adding = true'>Add Widget</a><br /><i class='material-icons'>add</i></div>           
 </div>
 <p-dialog header='Add Widget' [(visible)]='adding' modal='true' closable='true'>

@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit
     widgetApi: string;
     refreshRate: string;
 
+    jsond: string;
+
     activeApis: Object[] = [];
 
     constructor(
@@ -52,6 +54,8 @@ export class DashboardComponent implements OnInit
                             }, widget['refresh_rate']);
                         });
                         console.log(this.widgets);
+                        this.jsond = JSON.stringify(this.widgets);
+                        console.log(this.jsond);
                     });
             }
         });
