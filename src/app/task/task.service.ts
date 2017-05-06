@@ -12,7 +12,6 @@ export class TaskService
 
     addTask(parentID: number, text: string, rating: number, end: string, widgetID: number): Observable<boolean>
     {
-        console.log('GOT TO HERE');
         var data = {
             parent_id: parentID,
             due_date: end,
@@ -32,6 +31,14 @@ export class TaskService
         return this.http.get(Constants.API + '/widgetTask/' + widgetID)
             .map((res: Response)=>{
                 console.log(res.json());
+                return res.json();
+            });
+    }
+
+    removeTask(taskID: number): Observable<Object>
+    {
+        return this.http.post(Constants.API + '/widgetTask/remove/', {id: taskID}, Constants.OPTIONS)
+            .map((res: Response) =>{
                 return res.json();
             });
     }

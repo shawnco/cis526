@@ -4,11 +4,12 @@
 <p-dialog header='{{widget.title}}' [(visible)]='showing' modal='true' closable='true'>
     {{widget.content}}
 
-    <div *ngIf='task === undefined'>
+    <div *ngIf='!task'>
         <button pButton type='button' class='ui-button-primary' label='Add Task' (click)='addingTask = true'></button>
     </div>
-    <div *ngIf='task !== undefined'>
-        <task [task]='task'></task>
+    <div *ngIf='task'>
+        <task [task]='task'></task><br />
+        <button pButton type='button' class='ui-button-warning' label='Remove Task' (click)='removeTask(task.id)'></button>
     </div>
     <p-footer>
         <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>

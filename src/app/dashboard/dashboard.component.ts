@@ -11,7 +11,7 @@ export class DashboardComponent implements OnInit
 {
     adding: boolean;
     id: number;
-    widgets: Object[] = [];
+    widgets: Object[];
     
     widgetTitle: string;
     widgetContent: string;
@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit
     ngOnInit(): void
     {
         this.route.params.forEach((params: Params)=>{
-            if(params['id'] !== undefined){
+            if(params['id'] !== null){
                 this.id = +params['id'];
                 console.log(this.id);
                 this.widgetService.getWidgets(this.id)
@@ -44,20 +44,17 @@ export class DashboardComponent implements OnInit
 
                         // Add APIs to the list
                         this.widgets.forEach((widget)=>{
-                            if(widget['api'] !== undefined){
+                            if(widget['api'] !== null){
                                 this.activeApis.push({
                                     api: widget['api'],
                                     rate: widget['refresh_rate']
-
                                 });
+                                setInterval(()=>{
+                                    console.log('CALLING: ' + widget['api'])
+                                }, widget['refresh_rate']);                                
                             }
-                            setInterval(()=>{
-                                console.log('CALLING: ' + widget['api'])
-                            }, widget['refresh_rate']);
+
                         });
-                        console.log(this.widgets);
-                        this.jsond = JSON.stringify(this.widgets);
-                        console.log(this.jsond);
                     });
             }
         });
