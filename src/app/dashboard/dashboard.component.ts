@@ -44,11 +44,13 @@ export class DashboardComponent implements OnInit
 
                         // Add APIs to the list
                         this.widgets.forEach((widget)=>{
-                            this.activeApis.push({
-                                api: widget['api'],
-                                rate: widget['refresh_rate']
+                            if(widget['api'] !== undefined){
+                                this.activeApis.push({
+                                    api: widget['api'],
+                                    rate: widget['refresh_rate']
 
-                            });
+                                });
+                            }
                             setInterval(()=>{
                                 console.log('CALLING: ' + widget['api'])
                             }, widget['refresh_rate']);

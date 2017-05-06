@@ -1,5 +1,8 @@
 <ul class='nav nav-stacked'>
-    <li *ngFor='let d of dashboards'><a routerLink='/dashboard/{{d.id}}'>{{d.name}} <i class='material-icons'>keyboard_arrow_right</i></a></li>
+    <li *ngFor='let d of dashboards'>
+        <i class='material-icons'>create</i> <i class='material-icons'>clear</i>
+        <a routerLink='/dashboard/{{d.id}}'>{{d.name}} <i class='material-icons'>keyboard_arrow_right</i></a>
+    </li>
     <li (click)='adding = true'>New Dashboard <i class='material-icons'>add</i></li>
 </ul>
 <p-dialog header='Add Dashboard' [(visible)]='adding' modal='true' closable='true'>

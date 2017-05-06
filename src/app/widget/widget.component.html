@@ -1,2 +1,29 @@
-<div class='panel-heading'>{{widget.title}}</div>
+<div class='panel-heading' (click)='openWidget()'>{{widget.title}}</div>
 <div class='panel-body'>{{widget.content}}</div>
+
+<p-dialog header='{{widget.title}}' [(visible)]='showing' modal='true' closable='true'>
+    {{widget.content}}
+
+    <div *ngIf='task === undefined'>
+        <button pButton type='button' class='ui-button-primary' label='Add Task' (click)='addingTask = true'></button>
+    </div>
+    <div *ngIf='task !== undefined'>
+        <task [task]='task'></task>
+    </div>
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='showing = false'></button>
+            <button pButton type='button' class='ui-button-primary' label='OK' (click)='showing = false'></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header='Add New Task' [(visible)]='addingTask' modal='true' closable='true'>
+    Description: <textarea name='text' id='text' [(ngModel)]='newTaskText'></textarea><br />
+    Difficulty: <input name='rating' id='rating' [(ngModel)]='newTaskRating' /><br />
+    Due Date: <p-calendar [(ngModel)]='newTaskDue'></p-calendar>
+    <p-footer>
+        <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='addingTask = false'></button>
+        <button pButton type='button' class='ui-button-primary' label='Add' (click)='addWidgetTask()'></button>
+    </p-footer>
+</p-dialog>

@@ -185,7 +185,7 @@ app.post('/task/add', function(req, res){
     req.on('end', function(){
         var post = JSON.parse(body);
         console.log(post);
-        db.run('INSERT INTO tasks (parent_id, text, due_date, difficulty) VALUES (?, ?, ?, ?)', [post.parent_id, post.text, post.due_date, post.difficulty], function(err){
+        db.run('INSERT INTO tasks (parent_id, text, due_date, difficulty, widget_id) VALUES (?, ?, ?, ?, ?)', [post.parent_id, post.text, post.due_date, post.difficulty, post.widget_id], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
@@ -199,12 +199,24 @@ app.post('/task/add', function(req, res){
 
 // Get task
 app.get('/task/:id', function(req, res){
-    db.all('SELECT * FROM tasks WHERE id = ?', [req.body.id], function(err, row){
+    db.all('SELECT * FROM tasks WHERE id = ?', [req.params.id], function(err, row){
         if(err){
             console.log(err);
             res.end(JSON.stringify(false));
         }else{
             res.end(row);
+        }
+    });
+});
+
+// Get task belonging to widget
+app.get('/widgetTask/:id', function(req, res){
+    db.all('SELECT * FROM tasks WHERE widget_id = ?', [req.params.id], function(err, row){
+        if(err){
+            console.log(err);
+            res.end(JSON.stringify(false));
+        }else{
+            res.end(JSON.stringify(row));
         }
     });
 });

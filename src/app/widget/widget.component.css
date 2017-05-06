@@ -1,0 +1,9 @@
+.panel-heading {
+    background-color: #00FF00;
+}
+.panel-body {
+    background-color: #CCCCCC;
+}
+.expand {
+    float: right;
+}

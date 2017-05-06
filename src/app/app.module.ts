@@ -3,11 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule, DialogModule } from 'primeng/primeng';
+import { ButtonModule, DialogModule, RatingModule, CalendarModule } from 'primeng/primeng';
 
 import { AppComponent }  from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { TaskComponent } from './task/task.component';
 import { WidgetComponent } from './widget/widget.component';
 
 @NgModule({
@@ -17,12 +18,15 @@ import { WidgetComponent } from './widget/widget.component';
       HttpModule,
       FormsModule,
       DialogModule,
-      ButtonModule
+      ButtonModule,
+      RatingModule,
+      CalendarModule
     ],
   declarations: [ 
       AppComponent,
       DashboardComponent,
       NavbarComponent,
+      TaskComponent,
       WidgetComponent
   ],
   bootstrap:    [ AppComponent ]
