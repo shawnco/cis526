@@ -105,7 +105,7 @@ app.post('/dashboard/delete/:id', function(req, res){
 // -------- WIDGETS --------
 
 // Get widgets of a dashboard
-app.get('/widgets/get/id', function(req, res){
+app.get('/widgets/get/:id', function(req, res){
     db.all('SELECT * FROM widgets WHERE dashboard_id = ?', [req.params.id], function(err, row){
         if(err) return console.log(err);
         res.end(JSON.stringify(row));
@@ -121,7 +121,7 @@ app.post('/widget/add', function(req, res){
     req.on('end', function(){
         var post = JSON.parse(body);
         console.log(post);
-        db.run('INSERT INTO widgets (title, dashboard_id, content, refresh_rate, task_id, api) VALUES (?, ?, ?, ?, ?, ?)' [post.title, post.dashboard_id, post.content, post.refresh_rate, post.task_id, post.api], function(err){
+        db.run('INSERT INTO widgets (title, dashboard_id, content, refresh_rate, task_id, api) VALUES (?, ?, ?, ?, ?, ?)', [post.title, post.dashboard_id, post.content, post.refresh_rate, post.task_id, post.api], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));

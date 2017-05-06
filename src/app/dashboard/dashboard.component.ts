@@ -9,8 +9,17 @@ import { WidgetService } from './../widget/widget.service';
 })
 export class DashboardComponent implements OnInit
 {
-    widgets: Object[];
+    adding: boolean;
+    id: number;
+    widgets: Object[] = [];
     
+    widgetTitle: string;
+    widgetContent: string;
+    widgetApi: string;
+    refreshRate: string;
+
+    activeApis: Object[] = [];
+
     constructor(
         private route: ActivatedRoute,
         private widgetService: WidgetService
@@ -18,25 +27,47 @@ export class DashboardComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.route.params
-            .map((params: Params)=>{
-                console.log(params);
-                if(params['id']){
-                    var id = params['id'];
-                    this.widgetService.getWidgets(id)
-                        .subscribe((data: Object[])=>{
-                            this.widgets = data;
-                            if(this.widgets.length === 0){
-                                console.log('no widgets!');
-                            }else{
-                                console.log(this.widgets);
-                            }
+        this.route.params.forEach((params: Params)=>{
+            if(params['id'] !== undefined){
+                this.id = +params['id'];
+                console.log(this.id);
+                this.widgetService.getWidgets(this.id)
+                    .subscribe((data: Object[])=>{
+                        this.widgets = data;
+                        if(this.widgets.length === 0){
+                            console.log('no widgets!');
+                        }else{
+                            console.log(this.widgets);
+                        }
+
+                        // Add APIs to the list
+                        this.widgets.forEach((widget)=>{
+                            this.activeApis.push({
+                                api: widget['api'],
+                                rate: widget['refresh_rate']
+
+                            });
+                            setInterval(()=>{
+                                console.log('CALLING: ' + widget['api'])
+                            }, widget['refresh_rate']);
                         });
-                }
-            });
+                        console.log(this.widgets);
+                    });
+            }
+        });
     }
 
     addWidget(): void
     {
+        this.widgetService.addWidget(this.id, this.widgetTitle, this.widgetContent, this.widgetApi, parseInt(this.refreshRate))
+            .subscribe((data: boolean) => {
+                if(data === true){
+                    console.log('Added widget!');
+                    this.adding = false;
+                }else{
+                    console.log('Error!');
+                    this.adding = false;
+                }
+            });
     }
 }
