@@ -14,6 +14,10 @@ export class NavbarComponent
 
     adding: boolean;
     newDashName: string; 
+    editDash: Object;
+    editing: boolean;
+    removeDash: Object;
+    removing: boolean;
     
     constructor(private dashboardService: DashboardService){}
 
@@ -35,6 +39,19 @@ export class NavbarComponent
             });
     }
 
+    // Edit the content of a dashboard
+    editDashboard(): void
+    {
+        this.dashboardService.updateDashboard(this.editDash)
+            .subscribe((data: boolean)=>{
+                if(data){
+                    console.log('Dashboard updated!');
+                    this.editing = false;
+                    this.getDashboards();
+                }
+            })
+    }
+
     // Get dashboards
     getDashboards(): void
     {
@@ -44,5 +61,16 @@ export class NavbarComponent
                 console.log(data);
                 this.dashboards = data;
             });
+    }
+
+    // Remove dashboard altogether
+    removeDashboard(): void
+    {
+        this.dashboardService.removeDashboard(this.removeDash['id'])
+            .subscribe((data: boolean)=>{
+                console.log('Dashboard removed!');
+                this.removing = false;
+                this.getDashboards();
+            })
     }
 }

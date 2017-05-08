@@ -1,16 +1,41 @@
 <ul class='nav nav-stacked'>
     <li *ngFor='let d of dashboards'>
-        <i class='material-icons'>create</i> <i class='material-icons'>clear</i>
+        <i class='material-icons' (click)='editing = true; editDash = d'>create</i> 
+        <i class='material-icons' (click)='removing = true; removeDash = d'>clear</i>
         <a routerLink='/dashboard/{{d.id}}'>{{d.name}} <i class='material-icons arrow-right'>keyboard_arrow_right</i></a>
     </li>
     <li (click)='adding = true'>New Dashboard <i class='material-icons arrow-right'>add</i></li>
 </ul>
+
+<!-- Add dashboard -->
 <p-dialog header='Add Dashboard' [(visible)]='adding' modal='true' closable='true'>
     Dashboard Name: <input id='dashboard-name' name='dashboard-name' [(ngModel)]='newDashName' />
     <p-footer>
         <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
             <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='adding = false'></button>
             <button pButton type='button' class='ui-button-primary' label='Done' (click)='addDashboard()'></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<!-- Remove dashboard -->
+<p-dialog header='Remove Dashboard' [(visible)]='removing' modal='true' closable='true'>
+    Are you sure you want to remove <span *ngIf='removeDash'>{{removeDash.name}}</span>?
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='No' (click)='removing = false'></button>
+            <button pButton type='button' class='ui-button-primary' label='Yes' (click)='removeDashboard()'></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<!-- Edit dashboard -->
+<p-dialog header='Edit Dashboard' [(visible)]='editing' modal='true' closable='true'>
+    Dashboard Name: <span *ngIf='editDash'><input id='dashboard-name' name='dashboard-name' [(ngModel)]='editDash.name' /></span>
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='editing = false'></button>
+            <button pButton type='button' class='ui-button-primary' label='Done' (click)='editDashboard()'></button>
         </div>
     </p-footer>
 </p-dialog>

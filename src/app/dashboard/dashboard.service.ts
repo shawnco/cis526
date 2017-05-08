@@ -26,4 +26,20 @@ export class DashboardService
                 return res.json();
             });
     }
+
+    updateDashboard(editDash: Object): Observable<boolean>
+    {
+        return this.http.post('/dashboard/update', editDash, Constants.OPTIONS)
+            .map((res: Response)=>{
+                return res.json();
+            });
+    }
+
+    removeDashboard(id: number): Observable<boolean>
+    {
+        return this.http.post('/dashboard/delete', {id: id}, Constants.OPTIONS)
+            .map((res: Response)=>{
+                return res.json();
+            });
+    }
 }

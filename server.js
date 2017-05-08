@@ -41,7 +41,7 @@ app.get('/dashboards/get/:id', function(req, res){
 });
 
 // Update the dashboard
-app.post('/dashboard/update/:id', function(req, res){
+app.post('/dashboard/update', function(req, res){
     var body = '';
     req.on('data', function(data){
         body += data;
@@ -83,7 +83,7 @@ app.post('/dashboard/add', function(req, res){
 });
 
 // Delete a dashboard
-app.post('/dashboard/delete/:id', function(req, res){
+app.post('/dashboard/delete', function(req, res){
     var body = '';
     req.on('data', function(data){
         body += data;
@@ -97,6 +97,7 @@ app.post('/dashboard/delete/:id', function(req, res){
                 res.end(JSON.stringify(false));
             }else{
                 console.log('Deleted dashboard: ' + post.name);
+                res.end(JSON.stringify(true));
             }
         })
     })
