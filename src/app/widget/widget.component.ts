@@ -45,4 +45,17 @@ export class WidgetComponent
                 this.showing = true;
             })
     }
+
+    removeTask(): void
+    {
+        this.taskService.removeTask(this.widget['id'])
+            .subscribe((data: boolean)=>{
+                if(data === true){
+                    this.task = undefined;
+                    console.log('Task removed!');
+                }else{
+                    console.log('Task not removed :(');
+                }
+            })
+    }
 }

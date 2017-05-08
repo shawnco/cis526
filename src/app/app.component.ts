@@ -1,23 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { DashboardService } from './dashboard/dashboard.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  providers: [DashboardService]
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-    dashboards: Object[];
-    constructor(private dashboardService: DashboardService){}
+export class AppComponent
+{
 
-    ngOnInit(): void
-    {
-        this.dashboardService.getDashboards()
-            .subscribe((data: Object[])=>
-            {
-                console.log(data);
-                this.dashboards = data;
-            });
-    }
 }

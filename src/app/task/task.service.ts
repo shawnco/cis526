@@ -35,9 +35,9 @@ export class TaskService
             });
     }
 
-    removeTask(taskID: number): Observable<Object>
+    removeTask(widgetID: number): Observable<Object>
     {
-        return this.http.post(Constants.API + '/widgetTask/remove/', {id: taskID}, Constants.OPTIONS)
+        return this.http.post(Constants.API + '/widgetTask/remove/', {id: widgetID}, Constants.OPTIONS)
             .map((res: Response) =>{
                 return res.json();
             });

@@ -219,22 +219,6 @@ app.get('/task/:id', function(req, res){
     });
 });
 
-// Get task belonging to widget
-app.get('/widgetTask/:id', function(req, res){
-    console.log('widget id is ' + req.params.id);
-    db.all('SELECT * FROM tasks WHERE id = (SELECT task_id FROM widgets WHERE id = ?)', [req.params.id], function(err, row){
-        if(err){
-            console.log(err);
-            res.end(JSON.stringify(false));
-        }else{
-            if(row.length === 0){
-                res.end(JSON.stringify(false));
-            }else{
-                res.end(JSON.stringify(row[0]));
-            }
-        }
-    });
-});
 
 // Update task 
 app.post('/task/add', function(req, res){
@@ -261,6 +245,9 @@ app.post('/task/add', function(req, res){
 app.post('/task/delete/:id', function(req, res){
     var body = '';
     req.on('data', function(data){
+        body += data;
+    });
+    req.on('end', function(){
         var post = JSON.parse(body);
         console.log(post);
         db.run('DELETE FROM tasks WHERE id = ?', [post.id], function(err){
@@ -274,6 +261,47 @@ app.post('/task/delete/:id', function(req, res){
         });
     });
 });
+
+// -------- Widget Tasks --------
+
+// Get task belonging to widget
+app.get('/widgetTask/:id', function(req, res){
+    console.log('widget id is ' + req.params.id);
+    db.all('SELECT * FROM tasks WHERE id = (SELECT task_id FROM widgets WHERE id = ?)', [req.params.id], function(err, row){
+        if(err){
+            console.log(err);
+            res.end(JSON.stringify(false));
+        }else{
+            if(row.length === 0){
+                res.end(JSON.stringify(false));
+            }else{
+                res.end(JSON.stringify(row[0]));
+            }
+        }
+    });
+});
+
+// Remove a widget's task
+app.post('/widgetTask/remove', function(req, res){
+    var body = '';
+    req.on('data', function(data){
+        body += data;
+    });
+    req.on('end', function(){
+        var post = JSON.parse(body);
+        console.log(post);
+        db.run('UPDATE widgets SET task_id = NULL WHERE id = ?', [post.id], function(err){
+            if(err){
+                console.log(err);
+                res.end(JSON.stringify(false));
+            }else{
+                console.log('Widget task removed!');
+                res.end(JSON.stringify(true));
+            }
+        });
+    });
+});
+
 
 // -------- General Routing --------
 
