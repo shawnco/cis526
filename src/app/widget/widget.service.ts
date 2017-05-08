@@ -35,4 +35,20 @@ export class WidgetService
                 return res.json();
             });
     }
+
+    removeWidget(widgetID: number): Observable<boolean>
+    {
+        return this.http.post(Constants.API + '/widget/remove', {id: widgetID}, Constants.OPTIONS)
+            .map((res: Response)=>{
+                return res.json();
+            });
+    }
+
+    editWidget(widget: Object): Observable<boolean>
+    {
+        return this.http.post(Constants.API + '/widget/update', widget, Constants.OPTIONS)
+            .map((res: Response)=>{
+                return res.json();
+            });
+    }
 }

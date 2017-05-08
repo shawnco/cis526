@@ -7,6 +7,9 @@
     color: white;
     line-height: 0.8em;
 }
+.panel-heading .material-icons {
+    float: right;
+}
 .panel-body {
     background-color: white;
 }

@@ -1,5 +1,9 @@
 <div class='panel'>
-    <div class='panel-heading' (click)='openWidget()'>{{widget.title}}</div>
+    <div class='panel-heading'>
+        <span (click)='openWidget()'>{{widget.title}}</span>
+        <i class='material-icons' (click)='editing = true'>create</i> 
+        <i class='material-icons' (click)='removing = true'>clear</i>
+    </div>
     <div class='panel-body'>{{widget.content}}</div>
 </div>
 
@@ -21,6 +25,7 @@
     </p-footer>
 </p-dialog>
 
+<!-- Add task -->
 <p-dialog header='Add New Task' [(visible)]='addingTask' modal='true' closable='true'>
     Description: <textarea name='text' id='text' [(ngModel)]='newTaskText'></textarea><br />
     Difficulty: <input name='rating' id='rating' [(ngModel)]='newTaskRating' /><br />
@@ -28,5 +33,30 @@
     <p-footer>
         <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='addingTask = false'></button>
         <button pButton type='button' class='ui-button-primary' label='Add' (click)='addWidgetTask()'></button>
+    </p-footer>
+</p-dialog>
+
+<!-- Delete this widget -->
+<p-dialog header='Remove Widget' [(visible)]='removing' modal='true' closable='true'>
+    Are you sure you want to remove {{widget.title}}?
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='No' (click)='removing = false'></button>
+            <button pButton type='button' class='ui-button-primary' label='Yes' (click)='removeWidget()'></button>
+        </div>
+    </p-footer>    
+</p-dialog>
+
+<!-- Edit widget -->
+<p-dialog header='Edit Widget' [(visible)]='editing' modal='true' closable='true'>
+    Title: <input id='widget-title' name='widget-title' [(ngModel)]='widget.title' /><br />
+    Content Pattern: <input id='widget-content' name='widget-content' [(ngModel)]='widget.content' /><br />
+    API: <input id='api' name='api' [(ngModel)]='widget.api' /><br />
+    Refresh Rate: <input id='refresh_rate' name='refresh_rate' [(ngModel)]='widget.refresh_rate' />
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='editing = false'></button>
+            <button pButton type='button' class='ui-button-primary' label='Done' (click)='editWidget()'></button>
+        </div>
     </p-footer>
 </p-dialog>

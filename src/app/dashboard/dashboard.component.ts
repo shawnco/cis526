@@ -34,29 +34,7 @@ export class DashboardComponent implements OnInit
             if(params['id'] !== null){
                 this.id = +params['id'];
                 console.log(this.id);
-                this.widgetService.getWidgets(this.id)
-                    .subscribe((data: Object[])=>{
-                        this.widgets = data;
-                        if(this.widgets.length === 0){
-                            console.log('no widgets!');
-                        }else{
-                            console.log(this.widgets);
-                        }
-
-                        // Add APIs to the list
-                        this.widgets.forEach((widget)=>{
-                            if(widget['api'] !== null){
-                                this.activeApis.push({
-                                    api: widget['api'],
-                                    rate: widget['refresh_rate']
-                                });
-                                setInterval(()=>{
-                                    console.log('CALLING: ' + widget['api'])
-                                }, widget['refresh_rate']);                                
-                            }
-
-                        });
-                    });
+                this.getWidgets();
             }
         });
     }
@@ -68,10 +46,38 @@ export class DashboardComponent implements OnInit
                 if(data === true){
                     console.log('Added widget!');
                     this.adding = false;
+                    this.getWidgets();
                 }else{
                     console.log('Error!');
                     this.adding = false;
                 }
+            });
+    }
+
+    getWidgets(): void
+    {
+        this.widgetService.getWidgets(this.id)
+            .subscribe((data: Object[])=>{
+                this.widgets = data;
+                if(this.widgets.length === 0){
+                    console.log('no widgets!');
+                }else{
+                    console.log(this.widgets);
+                }
+
+                // Add APIs to the list
+                this.widgets.forEach((widget)=>{
+                    if(widget['api'] !== null){
+                        this.activeApis.push({
+                            api: widget['api'],
+                            rate: widget['refresh_rate']
+                        });
+                        setInterval(()=>{
+                            console.log('CALLING: ' + widget['api'])
+                        }, widget['refresh_rate']);                                
+                    }
+
+                });
             });
     }
 }

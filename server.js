@@ -135,7 +135,7 @@ app.post('/widget/add', function(req, res){
 });
 
 // Update widget
-app.post('/widget/update/:id', function(req, res){
+app.post('/widget/update', function(req, res){
     var body = '';
     req.on('data', function(data){
         body += data;
@@ -148,14 +148,14 @@ app.post('/widget/update/:id', function(req, res){
                 console.log(err);
                 res.end(JSON.stringify(false));
             }else{
-                res.end(JSON.stringify(row));
+                res.end(JSON.stringify(true));
             }
         });
     });
 });
 
 // Delete widget
-app.post('/widget/delete/:id', function(req, res){
+app.post('/widget/remove', function(req, res){
     var body = '';
     req.on('data', function(data){
         body += data;
@@ -163,7 +163,7 @@ app.post('/widget/delete/:id', function(req, res){
     req.on('end', function(){
         var post = JSON.parse(body);
         console.log(post);
-        db.run('DELETE FROM widgets WHERE = ?', [post.id], function(err){
+        db.run('DELETE FROM widgets WHERE id = ?', [post.id], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
