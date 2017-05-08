@@ -2,7 +2,12 @@
     <div *ngFor='let w of widgets' class='col-sm-3 widget'>
         <widget [widget]='w'></widget>
     </div>
-    <div class='col-sm-3 widget'><a (click)='adding = true'>Add Widget</a><br /><i class='material-icons'>add</i></div>           
+    <div class='col-sm-3 widget'>
+        <div class='panel'>
+            <div class='panel-heading'>Add Widget</div>
+            <div class='panel-body'><a (click)='adding = true'><i class='material-icons'>add</i></a>
+        </div>
+    </div> 
 </div>
 <p-dialog header='Add Widget' [(visible)]='adding' modal='true' closable='true'>
     Title: <input id='widget-title' name='widget-title' [(ngModel)]='widgetTitle' /><br />

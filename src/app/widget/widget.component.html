@@ -1,5 +1,7 @@
-<div class='panel-heading' (click)='openWidget()'>{{widget.title}}</div>
-<div class='panel-body'>{{widget.content}}</div>
+<div class='panel'>
+    <div class='panel-heading' (click)='openWidget()'>{{widget.title}}</div>
+    <div class='panel-body'>{{widget.content}}</div>
+</div>
 
 <p-dialog header='{{widget.title}}' [(visible)]='showing' modal='true' closable='true'>
     {{widget.content}}

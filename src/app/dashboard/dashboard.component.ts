@@ -5,6 +5,7 @@ import { WidgetService } from './../widget/widget.service';
 @Component({
     selector: 'dashboard',
     templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.css'],
     providers: [WidgetService]
 })
 export class DashboardComponent implements OnInit

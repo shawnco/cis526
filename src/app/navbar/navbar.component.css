@@ -1,3 +1,16 @@
+li {
+    padding: 5px;
+}
+
+.arrow-right {
+    float: right;
+}
+
+li, .material-icons, a {
+    color: white;
+    vertical-align: bottom;
+}
+
 a {
     display: inline !important;
 }
