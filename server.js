@@ -186,7 +186,7 @@ app.post('/task/add', function(req, res){
     req.on('end', function(){
         var post = JSON.parse(body);
         console.log(post);
-        db.run('INSERT INTO tasks (parent_id, text, due_date, difficulty) VALUES (?, ?, ?, ?)', [post.parent_id, post.text, post.due_date, post.difficulty], function(err, row){
+        db.run('INSERT INTO tasks (parent_id, text, due_date, difficulty, completed) VALUES (?, ?, ?, ?, ?)', [post.parent_id, post.text, post.due_date, post.difficulty, 0], function(err, row){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
@@ -331,6 +331,22 @@ app.post('/widgetTask/remove', function(req, res){
                 res.end(JSON.stringify(true));
             }
         });
+    });
+});
+
+// -------- Suggestor --------
+app.get('/suggest', function(req, res){
+    // First get all the leaf nodes, i.e. they're not a parent id.
+    db.all('SELECT * FROM tasks WHERE id NOT IN (SELECT parent_id FROM tasks)', function(err, rows){
+        if(err){
+            console.log(err);
+            res.end(JSON.stringify(false));
+        }else{
+            var count = rows.length - 1;
+            var choice = Math.floor(Math.random()*count);
+            console.log(rows, count);
+            res.end(JSON.stringify(rows[count]));
+        }
     });
 });
 

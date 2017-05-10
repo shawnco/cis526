@@ -1,6 +1,7 @@
     <div class='container'>
         <div class='lifeboard'>
             <h1>Lifeboard</h1>
+            <span (click)='suggest()'>Suggest!</span>
         </div>
         <div class='row'>
             <div class='col-sm-2' id='navigation'>
@@ -11,3 +12,15 @@
             </div>
         </div>
     </div>
+
+<p-dialog header='Suggested Task' modal='true' closable='true' [(visible)]='suggesting'>
+        {{suggestion.text}}<br />
+        Difficulty: {{suggestion.difficulty}}<br />
+        Due: {{suggestion.due_date}}
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='suggesting = false'></button>
+            <button pButton type='button' class='ui-button-primary' label='Completed' (click)='completeSuggestion()'></button>
+        </div>
+    </p-footer>
+</p-dialog>
