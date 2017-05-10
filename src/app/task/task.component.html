@@ -1,1 +1,14 @@
-<input type='checkbox'> {{task.text}} - Difficulty: {{task.difficulty}} Due: {{task.due_date}}
+<input type='checkbox' [(ngModel)]='task.completed' (click)='toggleChecked()'> {{task.text}} - Difficulty: {{task.difficulty}} Due: {{task.due_date}}
+<div class='child-task'><task *ngFor='let child of children' [task]='child'></task></div>
+<div class='child-task'><i class='material-icons' (click)='addingChild = true'>add</i></div>
+
+<!-- Add child task -->
+<p-dialog header='Add New Task' [(visible)]='addingChild' modal='false' closable='true' appendTo='body'>
+    Description: <textarea name='text' id='text' [(ngModel)]='child.text'></textarea><br />
+    Difficulty: <input name='rating' id='rating' [(ngModel)]='child.rating' /><br />
+    Due Date: <p-calendar [(ngModel)]='child.due'></p-calendar>
+    <p-footer>
+        <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='addingChild = false'></button>
+        <button pButton type='button' class='ui-button-primary' label='Add' (click)='addChildTask()'></button>
+    </p-footer>
+</p-dialog>

@@ -263,6 +263,37 @@ app.post('/task/delete/:id', function(req, res){
     });
 });
 
+// Get children for a task
+app.get('/task/children/:id', function(req, res){
+    db.all('SELECT * FROM tasks WHERE parent_id = ?', [req.params.id], function(err, rows){
+        if(err){
+            console.log(err);
+            res.end(JSON.stringify(false));
+        }else{
+            res.end(JSON.stringify(rows));
+        }
+    });
+});
+
+app.post('/task/toggle', function(req, res){
+    var body = '';
+    req.on('data', function(data){
+        body += data;
+    });
+    req.on('end', function(){
+        var post = JSON.parse(body);
+        console.log(post);
+        db.run('UPDATE tasks SET completed = ? WHERE id = ?', [post.completed, post.id], function(err){
+            if(err){
+                console.log(err);
+                res.end(JSON.stringify(false));
+            }else{
+                res.end(JSON.stringify(true));
+            }
+        });
+    });
+})
+
 // -------- Widget Tasks --------
 
 // Get task belonging to widget

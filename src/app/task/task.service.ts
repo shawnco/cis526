@@ -26,6 +26,14 @@ export class TaskService
             });
     }
 
+    getChildren(parentID: number): Observable<Object[]>
+    {
+        return this.http.get('/task/children/' + parentID)
+            .map((res: Response)=>{
+                return res.json();
+            });
+    }
+
     getWidgetTask(widgetID: number): Observable<Object>
     {
         return this.http.get(Constants.API + '/widgetTask/' + widgetID)
@@ -39,6 +47,15 @@ export class TaskService
     {
         return this.http.post(Constants.API + '/widgetTask/remove/', {id: widgetID}, Constants.OPTIONS)
             .map((res: Response) =>{
+                return res.json();
+            });
+    }
+
+    toggleChecked(taskID: number, completed: number): Observable<boolean>
+    {
+        console.log('yee');
+        return this.http.post(Constants.API + '/task/toggle', {id: taskID, completed: completed}, Constants.OPTIONS)
+            .map((res: Response)=>{
                 return res.json();
             });
     }
