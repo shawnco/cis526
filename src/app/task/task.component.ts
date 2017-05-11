@@ -52,7 +52,7 @@ export class TaskComponent implements OnInit
 
     toggleChecked(): void
     {
-        var completed;
+        var completed: number;
         if(this.task['completed'] === false){
             this.task['completed'] = true;
             completed = 1;

@@ -4,11 +4,11 @@
         <i class='material-icons' (click)='editing = true'>create</i> 
         <i class='material-icons' (click)='removing = true'>clear</i>
     </div>
-    <div class='panel-body'>{{widget.content}}</div>
+    <div class='panel-body' [innerHTML]='widget.contentHTML'></div>
 </div>
 
 <p-dialog header='{{widget.title}}' [(visible)]='showing' modal='false' closable='true'>
-    {{widget.content}}
+    <div [innerHTML]='widget.content'></div>
 
     <div *ngIf='!task'>
         <button pButton type='button' class='ui-button-primary' label='Add Task' (click)='addingTask = true'></button>

@@ -64,20 +64,6 @@ export class DashboardComponent implements OnInit
                 }else{
                     console.log(this.widgets);
                 }
-
-                // Add APIs to the list
-                this.widgets.forEach((widget)=>{
-                    if(widget['api'] !== null){
-                        this.activeApis.push({
-                            api: widget['api'],
-                            rate: widget['refresh_rate']
-                        });
-                        setInterval(()=>{
-                            console.log('CALLING: ' + widget['api'])
-                        }, widget['refresh_rate']);                                
-                    }
-
-                });
             });
     }
 }

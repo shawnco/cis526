@@ -10,6 +10,14 @@ export class WidgetService
         private http: Http
     ){}
 
+    callAPI(url: string): Observable<Object>
+    {
+        return this.http.get(url)
+            .map((res: Response)=>{
+                return res.json();
+            });
+    }
+
     getWidgets(dashID: number): Observable<Object[]>
     {
         return this.http.get(Constants.API + '/widgets/get/' + dashID)

@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TaskService } from './../task/task.service';
 import { WidgetService } from './widget.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'widget',
@@ -8,7 +9,7 @@ import { WidgetService } from './widget.service';
     styleUrls: ['./widget.component.css'],
     providers: [TaskService, WidgetService]
 })
-export class WidgetComponent
+export class WidgetComponent implements OnInit
 {
     showing: boolean;
     addingTask: boolean;
@@ -16,14 +17,34 @@ export class WidgetComponent
     newTaskRating: number;
     newTaskEnd: string;
     task: Object;
+    data: Object[]; // data holds the results of the API call.
+    test = 'yes';
 
     @Input()
-    widget: Object
+    widget: Object;
 
     constructor(
         private taskService: TaskService,
-        private widgetService: WidgetService
-    ){}
+        private widgetService: WidgetService,
+        private sanitizer: DomSanitizer
+    ){
+    }
+
+    ngOnInit(): void
+    {
+        this.widget['contentHTML'] = '';
+        if(this.widget['api'] !== null){
+            setInterval(()=>{
+                // console.log('CALLING MY API ', this.widget['api']);
+                this.widgetService.callAPI(this.widget['api'])
+                    .subscribe((res: any)=>{
+                        this.data = res;
+                        console.log(this.data);
+                        this.widget['contentHTML'] = this.data[this.widget['content']];
+                    });
+            }, this.widget['refresh_rate']);
+        }
+    }
 
     addWidgetTask(): void
     {
