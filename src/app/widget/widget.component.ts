@@ -35,12 +35,24 @@ export class WidgetComponent implements OnInit
         this.widget['contentHTML'] = '';
         if(this.widget['api'] !== null){
             setInterval(()=>{
-                // console.log('CALLING MY API ', this.widget['api']);
+                var temp = this.widget['content'];
                 this.widgetService.callAPI(this.widget['api'])
-                    .subscribe((res: any)=>{
-                        this.data = res;
-                        console.log(this.data);
-                        this.widget['contentHTML'] = this.data[this.widget['content']];
+                    .subscribe((data: any)=>{
+
+                        // Because Angular doesn't like to interpolate on strings
+                        // I need to force this interpolation. It works, but only
+                        // on top-level elements. It's a start, I suppose.
+                        // I really think I'll need to add support for a parser
+                        // Function either on front or back end that pre-processes
+                        // the data before returning it.
+                        var matches = this.widget['content'].match(/\{\{.*?\}\}/g);
+                        for(var m in matches){
+                            var pattern = matches[m].replace('{{', '').replace('}}', '');
+                            console.log(data[pattern]);
+                            temp = temp.replace(matches[m], data[pattern]);
+                            console.log(this.widget['contentHTML']);
+                        }
+                        this.widget['contentHTML'] = temp;
                     });
             }, this.widget['refresh_rate']);
         }
