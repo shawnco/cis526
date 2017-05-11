@@ -37,7 +37,7 @@ export class WidgetComponent implements OnInit
     };
     notifications: Object[];
     options = {
-        position: ['bottom', 'left'],
+        position: ['bottom', 'right'],
         timeOut: 5000,
         lastOnBottom: true,
         showProgressBar: false
