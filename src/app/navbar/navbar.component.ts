@@ -66,7 +66,6 @@ export class NavbarComponent
         this.dashboardService.getDashboards()
             .subscribe((data: Object[])=>
             {
-                console.log(data);
                 this.dashboards = data;
             });
     }
@@ -86,7 +85,6 @@ export class NavbarComponent
     {
         this.suggestService.suggest()
             .subscribe((data: Object)=>{
-                console.log(data);
                 this.suggestion = data;
                 this.suggesting = true;
             });

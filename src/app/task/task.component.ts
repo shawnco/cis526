@@ -24,7 +24,6 @@ export class TaskComponent implements OnInit
 
     ngOnInit(): void
     {
-        console.log('initing');
         if(this.task['completed'] === 1){
             this.task['completed'] = true;
         }else{
@@ -33,7 +32,6 @@ export class TaskComponent implements OnInit
         this.taskService.getChildren(this.task['id'])
             .subscribe((data: Object[])=>{
                 this.children = data;
-                console.log(this.children);
             });
     }
 

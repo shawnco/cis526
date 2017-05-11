@@ -48,13 +48,11 @@ app.post('/dashboard/update', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('UPDATE dashboards SET name = ? WHERE id = ?', [post.name, post.id], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
             }else{
-                console.log('Updated dashboard: ' + post.name);
                 res.end(JSON.stringify(true));
             }
         });
@@ -69,13 +67,11 @@ app.post('/dashboard/add', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post.name);
         db.run('INSERT INTO dashboards (name) VALUES (?)', [post.name], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
             }else{
-                console.log('Added dashboard: ' + post.name);
                 res.end(JSON.stringify(true));
             }
         });
@@ -90,13 +86,11 @@ app.post('/dashboard/delete', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('DELETE FROM dashboards WHERE id = ?', [post.id], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
             }else{
-                console.log('Deleted dashboard: ' + post.name);
                 res.end(JSON.stringify(true));
             }
         })
@@ -121,13 +115,11 @@ app.post('/widget/add', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('INSERT INTO widgets (title, dashboard_id, content, refresh_rate, task_id, api) VALUES (?, ?, ?, ?, ?, ?)', [post.title, post.dashboard_id, post.content, post.refresh_rate, post.task_id, post.api], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
             }else{
-                console.log('Added widget: ' + post.title);
                 res.end(JSON.stringify(true));
             }
         });
@@ -142,7 +134,6 @@ app.post('/widget/update', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('UPDATE widgets SET title = ?, dashboard_id = ? , content = ?, refresh_rate = ?, task_id = ?, api = ? WHERE id = ?', [post.title, post.dashboard_id, post.content, post.refresh_rate, post.task_id, post.api, post.id], function(err, row){
             if(err){
                 console.log(err);
@@ -162,13 +153,11 @@ app.post('/widget/remove', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('DELETE FROM widgets WHERE id = ?', [post.id], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
             }else{
-                console.log('Deleted widget: ' + post.title);
                 res.end(JSON.stringify(true));
             }
         })
@@ -185,7 +174,6 @@ app.post('/task/add', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('INSERT INTO tasks (parent_id, text, due_date, difficulty, completed) VALUES (?, ?, ?, ?, ?)', [post.parent_id, post.text, post.due_date, post.difficulty, 0], function(err, row){
             if(err){
                 console.log(err);
@@ -200,7 +188,6 @@ app.post('/task/add', function(req, res){
                         }
                     })
                 }
-                console.log('Added task: ' + post.text);
                 res.end(JSON.stringify(true));
             }
         });
@@ -228,13 +215,11 @@ app.post('/task/add', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('UPDATE tasks SET parent_id = ?, text = ?, due_date = ?, difficulty = ? WHERE id = ?', [post.parent_id, post.text, post.due_date, post.difficulty, post.id], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
             }else{
-                console.log('Added task: ' + post.text);
                 res.end(JSON.stringify(true));
             }
         });
@@ -249,13 +234,11 @@ app.post('/task/delete/:id', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('DELETE FROM tasks WHERE id = ?', [post.id], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
             }else{
-                console.log('Deleted task: ' + post.text);
                 res.end(JSON.stringify(true));
             }
         });
@@ -281,7 +264,6 @@ app.post('/task/toggle', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('UPDATE tasks SET completed = ? WHERE id = ?', [post.completed, post.id], function(err){
             if(err){
                 console.log(err);
@@ -297,7 +279,6 @@ app.post('/task/toggle', function(req, res){
 
 // Get task belonging to widget
 app.get('/widgetTask/:id', function(req, res){
-    console.log('widget id is ' + req.params.id);
     db.all('SELECT * FROM tasks WHERE id = (SELECT task_id FROM widgets WHERE id = ?)', [req.params.id], function(err, row){
         if(err){
             console.log(err);
@@ -320,13 +301,11 @@ app.post('/widgetTask/remove', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('UPDATE widgets SET task_id = NULL WHERE id = ?', [post.id], function(err){
             if(err){
                 console.log(err);
                 res.end(JSON.stringify(false));
             }else{
-                console.log('Widget task removed!');
                 res.end(JSON.stringify(true));
             }
         });
@@ -341,7 +320,6 @@ app.post('/notification/add', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('INSERT INTO notifications (widget_id, type, threshold) VALUES (?, ?, ?)', [post.widget_id, post.type, post.threshold], function(err){
             if(err){
                 console.log(err);
@@ -378,7 +356,6 @@ app.post('/notification/update', function(req, res){
     });
     req.on('end', function(){
         var post = JSON.parse(body);
-        console.log(post);
         db.run('UPDATE notifications SET widget_id = ?, type = ?, threshold = ? WHERE id = ?', [post.widget_id, post.type, post.threshold, post.id], function(err){
             if(err){
                 console.log(err);
@@ -397,7 +374,6 @@ app.get('/notifications/:id', function(req, res){
             console.log(err);
             res.end(JSON.stringify(false));
         }else{
-            console.log('my notifications are ', rows);
             res.end(JSON.stringify(rows));
         }
     });
@@ -413,7 +389,6 @@ app.get('/suggest', function(req, res){
         }else{
             var count = rows.length - 1;
             var choice = Math.floor(Math.random()*count);
-            console.log(rows, count);
             res.end(JSON.stringify(rows[choice]));
         }
     });
@@ -429,7 +404,11 @@ app.get('/number', function(req, res){
 // Route to the main page
 app.get('/', function(req, res){
     res.sendFile('./src/index.html');
-})
+});
+
+app.get('/dashboard/:id', function(req, res){
+    res.sendFile('./src/index.html');
+});
 
 // Launch the server
 app.listen(PORT, function(){

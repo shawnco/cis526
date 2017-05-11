@@ -19,7 +19,6 @@ export class TaskService
             text: text,
             widget_id: widgetID
         };
-        console.log(data);
         return this.http.post(Constants.API + '/task/add', data, Constants.OPTIONS)
             .map((res: Response)=>{
                 return res.json();
@@ -38,7 +37,6 @@ export class TaskService
     {
         return this.http.get(Constants.API + '/widgetTask/' + widgetID)
             .map((res: Response)=>{
-                console.log(res.json());
                 return res.json();
             });
     }
@@ -53,7 +51,6 @@ export class TaskService
 
     toggleChecked(taskID: number, completed: number): Observable<boolean>
     {
-        console.log('yee');
         return this.http.post(Constants.API + '/task/toggle', {id: taskID, completed: completed}, Constants.OPTIONS)
             .map((res: Response)=>{
                 return res.json();

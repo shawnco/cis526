@@ -36,7 +36,6 @@ export class WidgetService
             api: widgetApi,
             refresh_rate: 1000 * refreshRate
         };
-        console.log(data);
         return this.http.post(Constants.API + '/widget/add', data, Constants.OPTIONS)
             .map((res: Response)=>
             {

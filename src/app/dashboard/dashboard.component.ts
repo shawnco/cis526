@@ -33,7 +33,6 @@ export class DashboardComponent implements OnInit
         this.route.params.forEach((params: Params)=>{
             if(params['id'] !== null){
                 this.id = +params['id'];
-                console.log(this.id);
                 this.getWidgets();
             }
         });

@@ -11,7 +11,6 @@ export class DashboardService
 
     addDashboard(newDashName: string): Observable<boolean>
     {
-        console.log(newDashName);
         return this.http.post(Constants.API + '/dashboard/add', {name: newDashName}, Constants.OPTIONS)
             .map((res: Response)=>
             {
