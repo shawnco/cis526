@@ -65,4 +65,9 @@ export class DashboardComponent implements OnInit
                 }
             });
     }
+
+    updateList(e: any): void
+    {
+        this.getWidgets();
+    }
 }

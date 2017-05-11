@@ -406,10 +406,6 @@ app.get('/', function(req, res){
     res.sendFile('./src/index.html');
 });
 
-app.get('/dashboard/:id', function(req, res){
-    res.sendFile('./src/index.html');
-});
-
 // Launch the server
 app.listen(PORT, function(){
     console.log('Lifeboard is launched on port ' + PORT);

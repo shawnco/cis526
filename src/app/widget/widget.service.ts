@@ -34,7 +34,7 @@ export class WidgetService
             title: widgetTitle,
             content: widgetContent,
             api: widgetApi,
-            refresh_rate: 1000 * refreshRate
+            refresh_rate: refreshRate
         };
         return this.http.post(Constants.API + '/widget/add', data, Constants.OPTIONS)
             .map((res: Response)=>

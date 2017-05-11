@@ -1,6 +1,6 @@
 <div class='row'>
     <div *ngFor='let w of widgets' class='col-sm-3 widget'>
-        <widget [widget]='w'></widget>
+        <widget [widget]='w' (deleted)='updateList($event)'></widget>
     </div>
     <div class='col-sm-3 widget'>
         <div class='panel'>

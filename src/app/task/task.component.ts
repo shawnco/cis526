@@ -35,12 +35,21 @@ export class TaskComponent implements OnInit
             });
     }
 
+    getChildren(): void
+    {
+        this.taskService.getChildren(this.task['id'])
+            .subscribe((data: Object[])=>{
+                this.children = data;
+            });
+    }
+
     addChildTask(): void
     {
         this.taskService.addTask(this.task['id'], this.child.text, this.child.rating, this.child.due, null)
             .subscribe((data: boolean)=>{
                 if(data === true){
                     console.log('child task added');
+                    this.getChildren();
                 }else{
                     console.log('child task no added');
                 }

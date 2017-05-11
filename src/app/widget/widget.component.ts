@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { TaskService } from './../task/task.service';
 import { WidgetService } from './widget.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -45,6 +45,9 @@ export class WidgetComponent implements OnInit
 
     @Input()
     widget: Object;
+
+    @Output()
+    deleted: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     constructor(
         private taskService: TaskService,
@@ -102,7 +105,7 @@ export class WidgetComponent implements OnInit
                             }
                         })
                     });
-            }, this.widget['refresh_rate']);
+            }, this.widget['refresh_rate'] * 1000);
         }else{
             // Static value, just display.
             this.widget['contentHTML'] = this.widget['content'];
@@ -143,6 +146,7 @@ export class WidgetComponent implements OnInit
             .subscribe((data: boolean)=>{
                 if(data === true){
                     console.log('widget removed!');
+                    this.deleted.emit(true);
                 }else{
                     console.log('error removing widget');
                 }
