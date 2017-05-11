@@ -54,7 +54,16 @@ export class WidgetService
 
     editWidget(widget: Object): Observable<boolean>
     {
+        widget['refresh_rate'] *= 1000;
         return this.http.post(Constants.API + '/widget/update', widget, Constants.OPTIONS)
+            .map((res: Response)=>{
+                return res.json();
+            });
+    }
+
+    getWidgetNotifications(id: number): Observable<Object[]>
+    {
+        return this.http.get(Constants.API + '/notifications/' + id)
             .map((res: Response)=>{
                 return res.json();
             });

@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from './../dashboard/dashboard.service';
+import { SuggestService } from './../suggest/suggest.service';
+import { TaskService } from './../task/task.service';
 
 @Component({
     selector: 'navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css'],
-    providers: [DashboardService]
+    providers: [DashboardService, SuggestService, TaskService]
 })
 export class NavbarComponent
 {
@@ -18,8 +20,14 @@ export class NavbarComponent
     editing: boolean;
     removeDash: Object;
     removing: boolean;
+    suggesting: boolean;
+    suggestion: Object = {};
     
-    constructor(private dashboardService: DashboardService){}
+    constructor(
+        private dashboardService: DashboardService,
+        private suggestService: SuggestService,
+        private taskService: TaskService
+    ){}
 
     ngOnInit(): void
     {
@@ -73,4 +81,23 @@ export class NavbarComponent
                 this.getDashboards();
             })
     }
+
+    suggest(): void
+    {
+        this.suggestService.suggest()
+            .subscribe((data: Object)=>{
+                console.log(data);
+                this.suggestion = data;
+                this.suggesting = true;
+            });
+    }
+
+    completeSuggestion(): void
+    {
+        this.taskService.toggleChecked(this.suggestion['id'], 1)
+            .subscribe((res: boolean)=>{
+                this.suggesting = false;
+            });
+    }
+
 }

@@ -6,6 +6,9 @@
     </li>
     <li (click)='adding = true'>New Dashboard <i class='material-icons arrow-right'>add</i></li>
 </ul>
+<div class='suggest-something'>
+    <span (click)='suggest()'>Suggest Something!</span>
+</div>
 
 <!-- Add dashboard -->
 <p-dialog header='Add Dashboard' [(visible)]='adding' modal='true' closable='true'>
@@ -36,6 +39,20 @@
         <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
             <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='editing = false'></button>
             <button pButton type='button' class='ui-button-primary' label='Done' (click)='editDashboard()'></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<!-- Suggestion -->
+<p-dialog header='Suggested Task' modal='true' closable='true' [(visible)]='suggesting'>
+        {{suggestion.text}}<br />
+        Difficulty: {{suggestion.difficulty}}<br />
+        Due: {{suggestion.due_date | date:"short"}}
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='suggesting = false'></button>
+            <button pButton type='button' class='ui-button-secondary' label='Suggest Another' (click)='suggest()'></button>
+            <button pButton type='button' class='ui-button-primary' label='Completed' (click)='completeSuggestion()'></button>
         </div>
     </p-footer>
 </p-dialog>

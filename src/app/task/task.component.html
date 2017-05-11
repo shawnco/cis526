@@ -1,4 +1,4 @@
-<input type='checkbox' [(ngModel)]='task.completed' (click)='toggleChecked()'> {{task.text}} - Difficulty: {{task.difficulty}} Due: {{task.due_date}}
+<input type='checkbox' [(ngModel)]='task.completed' (click)='toggleChecked()'> {{task.text}} - Difficulty: {{task.difficulty}} Due: {{task.due_date | date:"short" }}
 <div class='child-task'><task *ngFor='let child of children' [task]='child'></task></div>
 <div class='child-task'><i class='material-icons' (click)='addingChild = true'>add</i></div>
 

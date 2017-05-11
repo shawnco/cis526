@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
-import { Constants } from './app.constants';
+import { Constants } from './../app.constants';
 
 @Injectable()
-export class AppService
+export class SuggestService
 {
     constructor(
         private http: Http

@@ -2,12 +2,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TaskService } from './../task/task.service';
 import { WidgetService } from './widget.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { NotifyService } from './../notify/notify.service';
+import { NotificationsService } from 'angular2-notifications-lite';
 
 @Component({
     selector: 'widget',
     templateUrl: './widget.component.html',
     styleUrls: ['./widget.component.css'],
-    providers: [TaskService, WidgetService]
+    providers: [TaskService, WidgetService, NotifyService]
 })
 export class WidgetComponent implements OnInit
 {
@@ -19,6 +21,27 @@ export class WidgetComponent implements OnInit
     task: Object;
     data: Object[]; // data holds the results of the API call.
     test = 'yes';
+    editing: boolean;
+    removing: boolean;
+
+    addingNotify: boolean;
+    editingNotify: boolean;
+    removingNotify: boolean;
+    newNotify: Object = {
+        type: '',
+        threshold: 0
+    };
+    editNotify: Object = {
+        type: '',
+        threshold: 0
+    };
+    notifications: Object[];
+    options = {
+        position: ['bottom', 'left'],
+        timeOut: 5000,
+        lastOnBottom: true,
+        showProgressBar: false
+    };
 
     @Input()
     widget: Object;
@@ -26,15 +49,22 @@ export class WidgetComponent implements OnInit
     constructor(
         private taskService: TaskService,
         private widgetService: WidgetService,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private notifyService: NotifyService,
+        private notificationsService: NotificationsService
     ){
     }
 
     ngOnInit(): void
     {
         this.widget['contentHTML'] = '';
+        this.widgetService.getWidgetNotifications(this.widget['id'])
+            .subscribe((data: Object[])=>{
+                this.widget['notifications'] = data;
+            });
         if(this.widget['api'] !== null){
             setInterval(()=>{
+                var oldValue = parseInt(this.widget['contentHTML']);
                 var temp = this.widget['content'];
                 this.widgetService.callAPI(this.widget['api'])
                     .subscribe((data: any)=>{
@@ -51,9 +81,33 @@ export class WidgetComponent implements OnInit
                             temp = temp.replace(matches[m], data[pattern]);
                         }
                         this.widget['contentHTML'] = temp;
+                        var newValue = parseInt(this.widget['contentHTML']);
+                        // Loop through the notifications this widget has, and notify upon conditions being met.
+                        this.notifications.forEach((notify: Object, index: number)=>{
+                            if(notify['type'] === 'below' && newValue < notify['threshold']){
+                                this.notificationsService.info(
+                                    'Below Threshold',
+                                    'The value of ' + this.widget['title'] + ' has fallen below the threshold of ' + notify['threshold']
+                                );
+                            }else if(notify['type'] === 'above' && newValue > notify['threshold']){
+                                this.notificationsService.info(
+                                    'Above Threshold',
+                                    'The value of ' + this.widget['title'] + ' has risen above the threshold of ' + notify['threshold']
+                                );
+                            }else if(notify['type'] === 'change' && newValue !== oldValue){
+                                this.notificationsService.info(
+                                    'Value Changed',
+                                    'The value of ' + this.widget['title'] + ' has changed from before'
+                                );
+                            }
+                        })
                     });
             }, this.widget['refresh_rate']);
+        }else{
+            // Static value, just display.
+            this.widget['contentHTML'] = this.widget['content'];
         }
+        this.getNotifies();
     }
 
     addWidgetTask(): void
@@ -66,6 +120,10 @@ export class WidgetComponent implements OnInit
                     console.log('Task not added.');
                 }
                 this.addingTask = false;
+                this.taskService.getWidgetTask(this.widget['id'])
+                    .subscribe((data: Object)=>{
+                        this.task = data;
+                    });                
             });
     }
 
@@ -76,7 +134,7 @@ export class WidgetComponent implements OnInit
             .subscribe((data: Object)=>{
                 this.task = data;
                 this.showing = true;
-            })
+            });
     }
 
     removeWidget(): void
@@ -100,6 +158,7 @@ export class WidgetComponent implements OnInit
                 }else{
                     console.log('Error updating widget');
                 }
+                this.editing = false;
             });
     }
 
@@ -113,6 +172,30 @@ export class WidgetComponent implements OnInit
                 }else{
                     console.log('Task not removed :(');
                 }
+                this.removing = false;
+            })
+    }
+
+    // Notifications
+    getNotifies(): void
+    {
+        this.notifyService.getNotifies(this.widget['id'])
+            .subscribe((data: Object[])=>{
+                this.notifications = data;
+            });
+    }
+
+    addNotify(): void
+    {
+        this.notifyService.addNotify(this.newNotify, this.widget['id'])
+            .subscribe((data: boolean)=>{
+                if(data === true){
+                    console.log('Notification added!');
+                    this.getNotifies();
+                }else{
+                    console.log('Notification not added');
+                }
+                this.addingNotify = false;
             })
     }
 

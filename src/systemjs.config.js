@@ -26,7 +26,8 @@
       // other libraries
       'rxjs':                      'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
-      'primeng': 'node_modules/primeng'
+      'primeng': 'node_modules/primeng',
+      'angular2-notifications-lite': 'node_modules/angular2-notifications-lite'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -44,7 +45,8 @@
       'node_modules/primeng': {
           format: 'cjs',
           defaultExtension: 'js'
-      }
+      },
+      'angular2-notifications-lite': {main: './components.js', defaultExtension: 'js'}
     }
   });
 })(this);

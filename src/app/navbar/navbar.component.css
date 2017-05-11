@@ -1,5 +1,14 @@
+ul {
+    margin-top: 10px;
+}
+
+li:first-of-type {
+    border-top: 1px solid white;
+}
+
 li {
     padding: 5px;
+    border-bottom: 1px solid white;
 }
 
 .arrow-right {
@@ -13,4 +22,10 @@ li, .material-icons, a {
 
 a {
     display: inline !important;
+}
+
+.suggest-something {
+    margin-top: 25px;
+    color: white;
+    text-align: center;
 }

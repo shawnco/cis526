@@ -1,5 +1,5 @@
 .lifeboard {
-    background-color: #c7c7c7;
+    background-color: #348fe2;
     width: 100%;
     padding: 20px;
 }
@@ -9,8 +9,9 @@ h1 {
 }
 
 #navigation {
-    background-color: #3a3633;
+    background-color: #1a2229;
     height: 100%;
+    padding: 0;
 }
 
 .container {

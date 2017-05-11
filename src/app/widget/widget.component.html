@@ -1,12 +1,13 @@
 <div class='panel'>
     <div class='panel-heading'>
-        <span (click)='openWidget()'>{{widget.title}}</span>
         <i class='material-icons' (click)='editing = true'>create</i> 
         <i class='material-icons' (click)='removing = true'>clear</i>
+        <span (click)='openWidget()'>{{widget.title}}</span>        
     </div>
     <div class='panel-body' [innerHTML]='widget.contentHTML'></div>
 </div>
 
+<!-- Viewing widget -->
 <p-dialog header='{{widget.title}}' [(visible)]='showing' modal='false' closable='true'>
     <div [innerHTML]='widget.content'></div>
 
@@ -17,6 +18,10 @@
         <task [task]='task'></task><br />
         <button pButton type='button' class='ui-button-warning' label='Remove Task' (click)='removeTask()'></button>
     </div>
+    <hr />
+    Notifications:<br />
+    <div *ngFor='let n of notifications'>{{n.type}} - {{n.threshold}}</div>
+    <div><i class='material-icons' (click)='addingNotify = true'>add</i> Add notification</div>
     <p-footer>
         <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
             <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='showing = false'></button>
@@ -60,3 +65,50 @@
         </div>
     </p-footer>
 </p-dialog>
+
+<!-- Adding notification -->
+<p-dialog header='Add Notification' [(visible)]='addingNotify' modal='false' closable='true'>
+    Type: 
+    <select [(ngModel)]='newNotify.type'>
+        <option value='change'>Change in value</option>
+        <option value='below'>Falls below:</option>
+        <option value='above'>Falls above:</option>
+    </select>
+    <input type='text' [(ngModel)]='newNotify.threshold' name='threshold' />
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='addingNotify = false'></button>
+            <button pButton type='button' class='ui-button-primary' label='Done' (click)='addNotify()'></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<!-- Removing notification -->
+<p-dialog header='Remove Notification' [(visible)]='removingNotify' modal='false' closable='true'>
+    Are you sure you want to remove this notification?
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='No' (click)='removingNotify = false'></button>
+            <button pButton type='button' class='ui-button-primary' label='Yes' (click)='removeNotify()'></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<!-- Editinging notification -->
+<p-dialog header='Add Notification' [(visible)]='editingNotify' modal='false' closable='true'>
+    Type: 
+    <select [(ngModel)]='editNotify.type'>
+        <option value='change'>Change in value</option>
+        <option value='below'>Falls below:</option>
+        <option value='above'>Falls above:</option>
+    </select>
+    <input type='text' [(ngModel)]='editNotify.threshold' name='threshold' />
+    <p-footer>
+        <div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>
+            <button pButton type='button' class='ui-button-secondary' label='Cancel' (click)='editingNotify = false'></button>
+            <button pButton type='button' class='ui-button-primary' label='Done' (click)='editNotify()'></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<simple-notifications [options]='options'></simple-notifications>

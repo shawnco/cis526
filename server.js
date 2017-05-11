@@ -107,9 +107,9 @@ app.post('/dashboard/delete', function(req, res){
 
 // Get widgets of a dashboard
 app.get('/widgets/get/:id', function(req, res){
-    db.all('SELECT * FROM widgets WHERE dashboard_id = ?', [req.params.id], function(err, row){
+    db.all('SELECT * FROM widgets WHERE dashboard_id = ?', [req.params.id], function(err, rows){
         if(err) return console.log(err);
-        res.end(JSON.stringify(row));
+        res.end(JSON.stringify(rows));
     });
 });
 
@@ -193,7 +193,6 @@ app.post('/task/add', function(req, res){
             }else{
                 var id = this.lastID;
                 if(post.widget_id){
-                    console.log('this goes to widget ' + post.widget_id);
                     db.run('UPDATE widgets SET task_id = ? WHERE id = ?', [this.lastID, post.widget_id], function(err){
                         if(err){
                             console.log(err);
@@ -334,6 +333,76 @@ app.post('/widgetTask/remove', function(req, res){
     });
 });
 
+// -------- Notifications --------
+app.post('/notification/add', function(req, res){
+    var body = '';
+    req.on('data', function(data){
+        body += data;
+    });
+    req.on('end', function(){
+        var post = JSON.parse(body);
+        console.log(post);
+        db.run('INSERT INTO notifications (widget_id, type, threshold) VALUES (?, ?, ?)', [post.widget_id, post.type, post.threshold], function(err){
+            if(err){
+                console.log(err);
+                res.end(JSON.stringify(false));
+            }else{
+                res.end(JSON.stringify(true));
+            }
+        });
+    });
+});
+
+app.post('/notification/remove', function(req, res){
+    var body = '';
+    req.on('data', function(data){
+        body += data;
+    });
+    req.on('end', function(){
+        var post = JSON.parse(body);
+        db.run('DELETE FROM notifications WHERE id = ?', [post.id], function(err){
+            if(err){
+                console.log(err);
+                res.end(JSON.stringify(false));
+            }else{
+                res.end(JSON.stringify(true));
+            }
+        });
+    });
+});
+
+app.post('/notification/update', function(req, res){
+    var body = '';
+    req.on('data', function(data){
+        body += data;
+    });
+    req.on('end', function(){
+        var post = JSON.parse(body);
+        console.log(post);
+        db.run('UPDATE notifications SET widget_id = ?, type = ?, threshold = ? WHERE id = ?', [post.widget_id, post.type, post.threshold, post.id], function(err){
+            if(err){
+                console.log(err);
+                res.end(JSON.stringify(false));
+            }else{
+                res.end(JSON.stringify(true));
+            }
+        });
+    });
+});
+
+// Get the notifications for a specific notification
+app.get('/notifications/:id', function(req, res){
+    db.all('SELECT * FROM notifications WHERE widget_id = ?', [req.params.id], function(err, rows){
+        if(err){
+            console.log(err);
+            res.end(JSON.stringify(false));
+        }else{
+            console.log('my notifications are ', rows);
+            res.end(JSON.stringify(rows));
+        }
+    });
+});
+
 // -------- Suggestor --------
 app.get('/suggest', function(req, res){
     // First get all the leaf nodes, i.e. they're not a parent id.
@@ -345,7 +414,7 @@ app.get('/suggest', function(req, res){
             var count = rows.length - 1;
             var choice = Math.floor(Math.random()*count);
             console.log(rows, count);
-            res.end(JSON.stringify(rows[count]));
+            res.end(JSON.stringify(rows[choice]));
         }
     });
 });
