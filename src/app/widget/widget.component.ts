@@ -48,9 +48,7 @@ export class WidgetComponent implements OnInit
                         var matches = this.widget['content'].match(/\{\{.*?\}\}/g);
                         for(var m in matches){
                             var pattern = matches[m].replace('{{', '').replace('}}', '');
-                            console.log(data[pattern]);
                             temp = temp.replace(matches[m], data[pattern]);
-                            console.log(this.widget['contentHTML']);
                         }
                         this.widget['contentHTML'] = temp;
                     });

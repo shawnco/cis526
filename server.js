@@ -350,6 +350,10 @@ app.get('/suggest', function(req, res){
     });
 });
 
+// -------- API Routing --------
+app.get('/number', function(req, res){
+    res.end(JSON.stringify({number: Math.random()*50}));
+});
 
 // -------- General Routing --------
 
